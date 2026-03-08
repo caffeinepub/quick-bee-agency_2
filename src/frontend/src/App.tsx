@@ -23,6 +23,433 @@ import { useMagneticHover } from "./hooks/useMagneticHover";
 import { useIncrementPageView, useSubmitLead } from "./hooks/useQueries";
 import { preloadRazorpay } from "./hooks/useRazorpay";
 
+// ============================================================
+// COUNTDOWN TIMER HOOK
+// ============================================================
+function useCountdown(initialSeconds: number) {
+  const [timeLeft, setTimeLeft] = useState(initialSeconds);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, []);
+
+  const hours = Math.floor(timeLeft / 3600);
+  const minutes = Math.floor((timeLeft % 3600) / 60);
+  const seconds = timeLeft % 60;
+  const formatted = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  return { formatted, hours, minutes, seconds, timeLeft };
+}
+
+// ============================================================
+// SPECIAL OFFERS BANNER
+// ============================================================
+function SpecialOffersBanner({
+  onDismiss,
+  countdown,
+}: {
+  onDismiss: () => void;
+  countdown: string;
+}) {
+  return (
+    <div
+      className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-3 sm:px-6 py-2.5 gap-2"
+      style={{
+        background:
+          "linear-gradient(90deg, #ff6a00 0%, #ff8c42 50%, #ff6a00 100%)",
+        boxShadow: "0 2px 20px rgba(255,106,0,0.5)",
+      }}
+      data-ocid="offers.banner"
+    >
+      {/* Left: text */}
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <span className="text-xs sm:text-sm font-black text-white whitespace-nowrap">
+          🔥 <span className="hidden xs:inline">FLASH SALE:</span> 50% OFF All
+          Services
+        </span>
+        <span className="hidden sm:inline text-xs font-bold text-white/80 whitespace-nowrap">
+          — Code: <strong className="text-white">QUICKBEE50</strong>
+        </span>
+      </div>
+
+      {/* Center: countdown */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <span className="hidden sm:inline text-xs text-white/80 font-semibold">
+          Ends in:
+        </span>
+        <div
+          className="text-xs sm:text-sm font-black text-white tracking-widest font-mono px-2 py-0.5 rounded-lg"
+          style={{ background: "rgba(0,0,0,0.25)" }}
+          data-ocid="offers.banner.loading_state"
+        >
+          {countdown}
+        </div>
+      </div>
+
+      {/* Right: claim + close */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <a
+          href="#offers"
+          className="text-xs font-black px-3 py-1.5 rounded-lg transition-all duration-200 whitespace-nowrap"
+          style={{
+            background: "rgba(255,255,255,0.95)",
+            color: "#ff6a00",
+            cursor: "pointer",
+          }}
+          data-ocid="offers.banner.primary_button"
+        >
+          Claim Now
+        </a>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 flex-shrink-0"
+          style={{ background: "rgba(0,0,0,0.2)", cursor: "pointer" }}
+          aria-label="Dismiss banner"
+          data-ocid="offers.banner.close_button"
+        >
+          <span className="text-white text-sm leading-none">✕</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// SPECIAL OFFERS SECTION
+// ============================================================
+const SPECIAL_OFFERS = [
+  {
+    icon: "🌐",
+    name: "Startup Website Package",
+    originalPrice: 14999,
+    discountedPrice: 6999,
+    savings: 8000,
+    features: [
+      "Responsive Design",
+      "SEO Optimized",
+      "5 Pages",
+      "7-Day Delivery",
+    ],
+  },
+  {
+    icon: "📱",
+    name: "Social Media Growth System",
+    originalPrice: 9999,
+    discountedPrice: 4999,
+    savings: 5000,
+    features: [
+      "30 Posts/Month",
+      "Story Design",
+      "Analytics Report",
+      "3 Platforms",
+    ],
+  },
+  {
+    icon: "🤖",
+    name: "AI Sales Automation",
+    originalPrice: 49999,
+    discountedPrice: 24999,
+    savings: 25000,
+    features: [
+      "CRM Integration",
+      "Auto Follow-ups",
+      "Lead Scoring",
+      "WhatsApp Bot",
+    ],
+  },
+  {
+    icon: "📊",
+    name: "Performance Marketing Bundle",
+    originalPrice: 29999,
+    discountedPrice: 14999,
+    savings: 15000,
+    features: [
+      "Meta + Google Ads",
+      "Weekly Reports",
+      "ROAS Optimization",
+      "Funnel Setup",
+    ],
+  },
+  {
+    icon: "🎨",
+    name: "Brand Identity Package",
+    originalPrice: 12999,
+    discountedPrice: 5999,
+    savings: 7000,
+    features: [
+      "Logo Design",
+      "Brand Guidelines",
+      "Social Kit",
+      "3-Day Delivery",
+    ],
+  },
+  {
+    icon: "🚀",
+    name: "Enterprise SEO System",
+    originalPrice: 19999,
+    discountedPrice: 9999,
+    savings: 10000,
+    features: [
+      "50+ Keywords",
+      "Backlink Building",
+      "Monthly Audit",
+      "Content Strategy",
+    ],
+  },
+];
+
+function SpecialOffersSection({ countdown }: { countdown: string }) {
+  return (
+    <section
+      id="offers"
+      className="relative py-14 sm:py-20"
+      style={{ background: "rgba(255,106,0,0.03)" }}
+      data-ocid="offers.section"
+    >
+      {/* Section glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,106,0,0.08) 0%, transparent 60%)",
+        }}
+      />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <RevealSection className="text-center mb-12">
+          <div
+            className="section-eyebrow animate-pulse"
+            style={{
+              background: "rgba(255,106,0,0.1)",
+              border: "1px solid rgba(255,106,0,0.4)",
+              color: "#ff6a00",
+            }}
+          >
+            🔥 Limited Time Offers
+          </div>
+          <h2 className="text-headline text-white mb-4">
+            Enterprise-Grade Services at{" "}
+            <span className="orange-glow-text">Half Price</span>
+          </h2>
+          {/* Countdown */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span
+              className="text-sm font-semibold"
+              style={{ color: "rgba(255,255,255,0.65)" }}
+            >
+              Offer ends in:
+            </span>
+            <div
+              className="text-lg font-black font-mono px-4 py-1.5 rounded-xl"
+              style={{
+                background: "rgba(255,106,0,0.15)",
+                border: "1px solid rgba(255,106,0,0.4)",
+                color: "#ff6a00",
+              }}
+              data-ocid="offers.loading_state"
+            >
+              {countdown}
+            </div>
+          </div>
+          <p className="text-subheadline max-w-2xl mx-auto">
+            Use code <strong style={{ color: "#ff6a00" }}>QUICKBEE50</strong> at
+            checkout. Valid for new clients only.
+          </p>
+        </RevealSection>
+
+        {/* Offers Grid */}
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+          {SPECIAL_OFFERS.map((offer, i) => (
+            <RevealSection key={offer.name} delay={i * 80}>
+              <div
+                className="glass-panel rounded-2xl p-6 h-full flex flex-col relative overflow-hidden group"
+                style={{
+                  border: "1px solid rgba(255,106,0,0.25)",
+                  boxShadow: "0 4px 30px rgba(255,106,0,0.08)",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.transform = "scale(1.03)";
+                  el.style.boxShadow =
+                    "0 8px 40px rgba(255,106,0,0.25), 0 0 0 1px rgba(255,106,0,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.transform = "scale(1)";
+                  el.style.boxShadow = "0 4px 30px rgba(255,106,0,0.08)";
+                }}
+                data-ocid={`offers.item.${i + 1}`}
+              >
+                {/* Savings badge */}
+                <div
+                  className="absolute top-4 right-4 px-2 py-1 rounded-full text-[10px] font-black"
+                  style={{
+                    background: "rgba(255,106,0,0.15)",
+                    border: "1px solid rgba(255,106,0,0.4)",
+                    color: "#ff6a00",
+                  }}
+                >
+                  Save ₹{offer.savings.toLocaleString("en-IN")}
+                </div>
+
+                {/* Icon */}
+                <div className="text-3xl mb-3">{offer.icon}</div>
+
+                {/* Name */}
+                <h3 className="text-white font-extrabold text-sm leading-snug mb-3 pr-16">
+                  {offer.name}
+                </h3>
+
+                {/* Pricing */}
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span
+                    className="text-2xl font-black"
+                    style={{ color: "#00ffc6" }}
+                  >
+                    ₹{offer.discountedPrice.toLocaleString("en-IN")}
+                  </span>
+                  <span
+                    className="text-sm line-through"
+                    style={{ color: "rgba(255,255,255,0.35)" }}
+                  >
+                    ₹{offer.originalPrice.toLocaleString("en-IN")}
+                  </span>
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-1.5 mb-5 flex-1">
+                  {offer.features.map((f) => (
+                    <li
+                      key={f}
+                      className="flex items-center gap-2 text-xs"
+                      style={{ color: "rgba(255,255,255,0.8)" }}
+                    >
+                      <span style={{ color: "#00ffc6" }}>✓</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <a
+                  href="#apply"
+                  className="w-full py-3 rounded-xl text-xs font-black text-center block transition-all duration-200"
+                  style={{
+                    background: "#ff6a00",
+                    color: "#fff",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 16px rgba(255,106,0,0.35)",
+                  }}
+                  data-ocid={`offers.item.${i + 1}.primary_button`}
+                >
+                  Claim This Offer →
+                </a>
+              </div>
+            </RevealSection>
+          ))}
+        </div>
+
+        {/* Bottom CTA */}
+        <RevealSection className="text-center">
+          <a
+            href="#services"
+            className="inline-flex items-center gap-2 text-sm font-bold transition-colors"
+            style={{ color: "#00ffc6", cursor: "pointer" }}
+            data-ocid="offers.secondary_button"
+          >
+            Don't see what you need? View all 122 services →
+          </a>
+        </RevealSection>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// MID-PAGE CTA STRIP
+// ============================================================
+function MidPageCTAStrip() {
+  return (
+    <section
+      className="relative py-12 sm:py-16 overflow-hidden"
+      data-ocid="midcta.section"
+    >
+      {/* Diagonal gradient */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,106,0,0.12) 0%, rgba(0,255,198,0.08) 50%, rgba(255,106,0,0.06) 100%)",
+          borderTop: "1px solid rgba(255,106,0,0.2)",
+          borderBottom: "1px solid rgba(0,255,198,0.15)",
+        }}
+      />
+      {/* Grid bg */}
+      <div className="hero-grid-bg pointer-events-none opacity-20" />
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <h2
+          className="font-black text-white mb-3"
+          style={{
+            fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Ready to Scale Your Revenue? Start Today.
+        </h2>
+        <p
+          className="text-sm sm:text-base mb-8"
+          style={{ color: "rgba(255,255,255,0.7)" }}
+        >
+          Join <strong style={{ color: "#00ffc6" }}>180+ businesses</strong>{" "}
+          already scaling with Quick Bee's AI systems.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#apply"
+            className="btn-orange btn-orange-glow cursor-hover touch-target inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-sm w-full sm:w-auto"
+            style={{ touchAction: "manipulation", cursor: "pointer" }}
+            data-ocid="midcta.primary_button"
+          >
+            🎯 Book Free Strategy Call
+          </a>
+          <a
+            href="https://wa.me/919182768591"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-sm w-full sm:w-auto transition-all duration-200"
+            style={{
+              background: "rgba(37,211,102,0.12)",
+              border: "1px solid rgba(37,211,102,0.4)",
+              color: "#25d366",
+              cursor: "pointer",
+            }}
+            data-ocid="midcta.secondary_button"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+            </svg>
+            WhatsApp Us Now
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Preload Razorpay script immediately so Pay Now has zero lag
 preloadRazorpay();
 
@@ -123,7 +550,7 @@ function AnimatedCounter({
 // ============================================================
 // NAVBAR
 // ============================================================
-function Navbar() {
+function Navbar({ bannerVisible = false }: { bannerVisible?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -145,21 +572,25 @@ function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-[#0b0b0f]/95 backdrop-blur-xl border-b border-[#00ffc6]/15"
           : "bg-transparent"
       }`}
+      style={{ top: bannerVisible ? "44px" : "0" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3 group">
-            <img
-              src="/assets/generated/quickbee-logo-no-bg.dim_400x400.png"
-              alt="Quick Bee Agency"
-              className="w-10 h-10 object-contain"
-            />
+            <div className="relative">
+              <img
+                src="/assets/uploads/qb-logo-1.png"
+                alt="Quick Bee Agency"
+                className="w-10 h-10 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(0,255,198,0.9)] group-hover:drop-shadow-[0_0_16px_rgba(0,255,198,1)] transition-all duration-300"
+              />
+              <div className="absolute inset-0 rounded-full bg-[#00ffc6]/20 blur-md animate-pulse z-0" />
+            </div>
             <div>
               <span className="font-extrabold text-white text-sm tracking-widest uppercase block leading-tight">
                 QUICK BEE
@@ -565,6 +996,7 @@ function HeroSection() {
                   )
                 }
                 onMouseLeave={heroCtaMagnetic.onMouseLeave}
+                data-ocid="hero.primary_button"
               >
                 <span>Book Private Strategy Call</span>
                 <svg
@@ -586,8 +1018,35 @@ function HeroSection() {
                 href="#systems"
                 className="btn-teal-outline cursor-hover touch-target inline-flex items-center w-full sm:w-auto justify-center gap-3 px-10 py-5 rounded-2xl"
                 style={{ touchAction: "manipulation" }}
+                data-ocid="hero.secondary_button"
               >
                 View Enterprise Systems
+              </a>
+              <a
+                href="#offers"
+                className="cursor-hover touch-target inline-flex items-center w-full sm:w-auto justify-center gap-3 px-10 py-5 rounded-2xl font-black text-sm transition-all duration-200"
+                style={{
+                  background: "rgba(255,106,0,0.1)",
+                  border: "1px solid rgba(255,106,0,0.4)",
+                  color: "#ff6a00",
+                  touchAction: "manipulation",
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "rgba(255,106,0,0.2)";
+                  el.style.boxShadow = "0 0 24px rgba(255,106,0,0.4)";
+                  el.style.borderColor = "rgba(255,106,0,0.7)";
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.background = "rgba(255,106,0,0.1)";
+                  el.style.boxShadow = "none";
+                  el.style.borderColor = "rgba(255,106,0,0.4)";
+                }}
+                data-ocid="hero.toggle"
+              >
+                🔥 View Special Offers
               </a>
             </div>
 
@@ -835,16 +1294,17 @@ function EnterpriseSystemsSection() {
           {SERVICES.map((service, i) => (
             <RevealSection key={service.title} delay={i * 80}>
               <div
-                className="glow-card card-neon-hover cursor-hover glass-panel rounded-2xl p-7 h-full"
+                className="glow-card card-neon-hover cursor-hover glass-panel rounded-2xl p-7 h-full flex flex-col"
                 style={{
                   boxShadow: "0 4px 40px rgba(0,0,0,0.35)",
                 }}
+                data-ocid={`systems.item.${i + 1}`}
               >
                 <div className="text-3xl mb-5">{service.icon}</div>
                 <h3 className="text-white font-extrabold text-base mb-6 leading-snug tracking-tight">
                   {service.title}
                 </h3>
-                <div className="space-y-2.5">
+                <div className="space-y-2.5 flex-1">
                   <MetricRow label="Revenue Impact" value={service.impact} />
                   <MetricRow label="Automation" value={service.automation} />
                   <MetricRow label="Scalability" value={service.scalability} />
@@ -853,6 +1313,39 @@ function EnterpriseSystemsSection() {
                     value={service.roi}
                     highlight
                   />
+                </div>
+                {/* Get This System CTA */}
+                <div
+                  className="mt-5 pt-4"
+                  style={{ borderTop: "1px solid rgba(0,255,198,0.12)" }}
+                >
+                  <a
+                    href="#apply"
+                    className="inline-block w-full text-center transition-all duration-200"
+                    style={{
+                      fontSize: "11px",
+                      color: "#00ffc6",
+                      border: "1px solid rgba(0,255,198,0.3)",
+                      padding: "6px 12px",
+                      borderRadius: "8px",
+                      background: "transparent",
+                      cursor: "pointer",
+                      fontWeight: 700,
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.background = "rgba(0,255,198,0.1)";
+                      el.style.borderColor = "rgba(0,255,198,0.6)";
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.background = "transparent";
+                      el.style.borderColor = "rgba(0,255,198,0.3)";
+                    }}
+                    data-ocid={`systems.item.${i + 1}.button`}
+                  >
+                    Get This System →
+                  </a>
                 </div>
               </div>
             </RevealSection>
@@ -1032,11 +1525,14 @@ function IntegrationSection() {
                 backdropFilter: "blur(20px)",
               }}
             >
-              <img
-                src="/assets/generated/quickbee-logo-no-bg.dim_400x400.png"
-                alt="QB Core"
-                className="w-8 h-8 object-contain mb-1"
-              />
+              <div className="relative mb-1">
+                <img
+                  src="/assets/uploads/qb-logo-1.png"
+                  alt="QB Core"
+                  className="w-8 h-8 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(0,255,198,0.9)]"
+                />
+                <div className="absolute inset-0 rounded-full bg-[#00ffc6]/20 blur-sm animate-pulse z-0" />
+              </div>
               <span
                 className="text-[9px] font-black tracking-widest uppercase leading-tight"
                 style={{ color: "#00ffc6" }}
@@ -1653,7 +2149,7 @@ function CaseStudiesSection() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-4">
                   <span
                     className="text-xs"
                     style={{ color: "rgba(255,255,255,0.55)" }}
@@ -1667,6 +2163,35 @@ function CaseStudiesSection() {
                     {cs.roi} ROI
                   </span>
                 </div>
+                {/* Get Similar Results CTA */}
+                <a
+                  href="#apply"
+                  className="block w-full text-center transition-all duration-200"
+                  style={{
+                    background: "rgba(255,106,0,0.1)",
+                    border: "1px solid rgba(255,106,0,0.3)",
+                    color: "#ff6a00",
+                    borderRadius: "10px",
+                    padding: "10px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                    textAlign: "center",
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.background = "rgba(255,106,0,0.2)";
+                    el.style.borderColor = "rgba(255,106,0,0.6)";
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.background = "rgba(255,106,0,0.1)";
+                    el.style.borderColor = "rgba(255,106,0,0.3)";
+                  }}
+                  data-ocid={`results.item.${i + 1}.button`}
+                >
+                  Get Similar Results →
+                </a>
               </div>
             </RevealSection>
           ))}
@@ -2341,6 +2866,7 @@ function FinalCTASection() {
                 finalCtaMagnetic.onMouseMove(e as React.MouseEvent<HTMLElement>)
               }
               onMouseLeave={finalCtaMagnetic.onMouseLeave}
+              data-ocid="finalcta.primary_button"
             >
               Start My Enterprise Growth System
               <svg
@@ -2364,8 +2890,45 @@ function FinalCTASection() {
               rel="noopener noreferrer"
               className="btn-teal-outline cursor-hover touch-target inline-flex items-center w-full sm:w-auto justify-center gap-3 px-12 py-6 rounded-2xl"
               style={{ touchAction: "manipulation" }}
+              data-ocid="finalcta.secondary_button"
             >
               Book Free 30-Min Strategy Call
+            </a>
+            <a
+              href="https://wa.me/919182768591?text=Hi%20Quick%20Bee%2C%20I%20want%20to%20build%20my%20AI%20revenue%20engine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-hover touch-target inline-flex items-center w-full sm:w-auto justify-center gap-3 px-10 py-6 rounded-2xl font-black text-sm transition-all duration-200"
+              style={{
+                background: "rgba(37,211,102,0.12)",
+                border: "1px solid rgba(37,211,102,0.4)",
+                color: "#25d366",
+                touchAction: "manipulation",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "rgba(37,211,102,0.22)";
+                el.style.borderColor = "rgba(37,211,102,0.7)";
+                el.style.boxShadow = "0 0 24px rgba(37,211,102,0.3)";
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = "rgba(37,211,102,0.12)";
+                el.style.borderColor = "rgba(37,211,102,0.4)";
+                el.style.boxShadow = "none";
+              }}
+              data-ocid="finalcta.toggle"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              💬 Chat on WhatsApp Now
             </a>
           </div>
 
@@ -2412,11 +2975,14 @@ function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img
-                src="/assets/generated/quickbee-logo-no-bg.dim_400x400.png"
-                alt="Quick Bee Agency"
-                className="w-10 h-10 object-contain"
-              />
+              <div className="relative">
+                <img
+                  src="/assets/uploads/qb-logo-1.png"
+                  alt="Quick Bee Agency"
+                  className="w-10 h-10 object-contain relative z-10 drop-shadow-[0_0_8px_rgba(0,255,198,0.9)]"
+                />
+                <div className="absolute inset-0 rounded-full bg-[#00ffc6]/20 blur-md animate-pulse z-0" />
+              </div>
               <div>
                 <span className="font-extrabold text-white text-sm tracking-widest uppercase block">
                   QUICK BEE AGENCY
@@ -2584,6 +3150,12 @@ function PageViewTracker() {
 // MAIN APP
 // ============================================================
 export default function App() {
+  const [bannerVisible, setBannerVisible] = useState(true);
+  // 47 hours 59 minutes 59 seconds
+  const { formatted: countdownFormatted } = useCountdown(
+    47 * 3600 + 59 * 60 + 59,
+  );
+
   return (
     <div
       className="min-h-screen"
@@ -2607,14 +3179,25 @@ export default function App() {
         }}
       />
 
-      <Navbar />
+      {/* Special Offers Banner — above navbar */}
+      {bannerVisible && (
+        <SpecialOffersBanner
+          onDismiss={() => setBannerVisible(false)}
+          countdown={countdownFormatted}
+        />
+      )}
+
+      {/* Navbar — shifts down when banner is visible */}
+      <Navbar bannerVisible={bannerVisible} />
 
       <main>
         <HeroSection />
+        <SpecialOffersSection countdown={countdownFormatted} />
         <EnterpriseSystemsSection />
         <ServicesSection />
         <IntegrationSection />
         <PerformanceSection />
+        <MidPageCTAStrip />
         <FunnelSection />
         <CaseStudiesSection />
         <ProcessSection />

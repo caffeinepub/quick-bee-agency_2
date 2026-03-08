@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRazorpay } from "../hooks/useRazorpay";
 import type { Service } from "./ServicesData";
+import { getServiceOffer } from "./ServicesSection";
 
 interface ServiceDetailModalProps {
   service: Service | null;
@@ -86,6 +87,11 @@ export default function ServiceDetailModal({
 
   if (!service) return null;
 
+  const offer = getServiceOffer(service);
+  const waEnquiry = encodeURIComponent(
+    `Hi, I want to enquire about ${service.name} — ${formatPrice(service.price)}`,
+  );
+
   return (
     <>
       <style>{`
@@ -132,6 +138,7 @@ export default function ServiceDetailModal({
         ref={dialogRef}
         className="service-dialog fixed inset-0 z-50 p-4"
         aria-label={service.name}
+        data-ocid="service.modal"
         onClose={onClose}
         onKeyDown={(e) => {
           if (e.key === "Escape") onClose();
@@ -155,6 +162,7 @@ export default function ServiceDetailModal({
             type="button"
             onClick={onClose}
             className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
+            data-ocid="service.modal.close_button"
             style={{
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.12)",
@@ -270,6 +278,37 @@ export default function ServiceDetailModal({
                 >
                   {formatPrice(service.price)}
                 </div>
+                {/* Offer badge */}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <div
+                    style={{
+                      display: "inline-block",
+                      background: offer.bg,
+                      border: `1px solid ${offer.border}`,
+                      color: offer.text,
+                      fontSize: 11,
+                      fontWeight: 800,
+                      padding: "3px 10px",
+                      borderRadius: 999,
+                    }}
+                  >
+                    🏷 {offer.label} — Limited Time
+                  </div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      background: "rgba(0,255,198,0.09)",
+                      border: "1px solid rgba(0,255,198,0.35)",
+                      color: "#00ffc6",
+                      fontSize: 11,
+                      fontWeight: 800,
+                      padding: "3px 10px",
+                      borderRadius: 999,
+                    }}
+                  >
+                    🛡 100% Money Back Guarantee
+                  </div>
+                </div>
               </div>
               <div
                 className="ml-auto text-right hidden sm:block"
@@ -325,6 +364,7 @@ export default function ServiceDetailModal({
             {paymentState === "success" ? (
               <div
                 className="rounded-2xl p-6 text-center"
+                data-ocid="service.modal.success_state"
                 style={{
                   background: "rgba(0,255,198,0.07)",
                   border: "1px solid rgba(0,255,198,0.3)",
@@ -341,52 +381,150 @@ export default function ServiceDetailModal({
               </div>
             ) : (
               <div className="space-y-3">
-                {/* Pay Now button */}
-                <button
-                  type="button"
-                  onClick={handlePay}
-                  disabled={paymentState === "loading"}
-                  className="w-full py-4 rounded-2xl font-black text-sm transition-all duration-300 relative overflow-hidden"
+                {/* 2×2 button grid */}
+                <div
                   style={{
-                    background:
-                      paymentState === "loading"
-                        ? "rgba(255,106,0,0.5)"
-                        : "linear-gradient(135deg, #ff6a00 0%, #ff3d00 100%)",
-                    color: "#fff",
-                    boxShadow:
-                      paymentState === "loading"
-                        ? "none"
-                        : "0 0 30px rgba(255,106,0,0.4), 0 8px 30px rgba(0,0,0,0.4)",
-                    letterSpacing: "0.05em",
-                    cursor:
-                      paymentState === "loading" ? "not-allowed" : "pointer",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "12px",
                   }}
                 >
-                  {paymentState === "loading" ? (
-                    <span className="flex items-center justify-center gap-3">
-                      <svg
-                        className="animate-spin"
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        aria-hidden="true"
-                      >
-                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                      </svg>
-                      Loading Payment Gateway...
-                    </span>
-                  ) : (
-                    `💳 PAY NOW — ${formatPrice(service.price)}`
-                  )}
-                </button>
+                  {/* Top-left: Pay Now */}
+                  <button
+                    type="button"
+                    onClick={handlePay}
+                    disabled={paymentState === "loading"}
+                    data-ocid="service.modal.primary_button"
+                    className="py-3.5 rounded-2xl font-bold text-sm text-center w-full transition-all duration-200 relative overflow-hidden"
+                    style={{
+                      background:
+                        paymentState === "loading"
+                          ? "rgba(255,106,0,0.5)"
+                          : "linear-gradient(135deg, #ff6a00 0%, #ff3d00 100%)",
+                      color: "#fff",
+                      boxShadow:
+                        paymentState === "loading"
+                          ? "none"
+                          : "0 0 20px rgba(255,106,0,0.35), 0 6px 20px rgba(0,0,0,0.3)",
+                      letterSpacing: "0.03em",
+                      cursor:
+                        paymentState === "loading" ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    {paymentState === "loading" ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg
+                          className="animate-spin"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.5"
+                          aria-hidden="true"
+                        >
+                          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                        Loading...
+                      </span>
+                    ) : (
+                      `💳 PAY NOW — ${formatPrice(service.price)}`
+                    )}
+                  </button>
+
+                  {/* Top-right: WhatsApp */}
+                  <a
+                    href={`https://wa.me/919182768591?text=${waEnquiry}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-ocid="service.modal.whatsapp_button"
+                    className="py-3.5 rounded-2xl font-bold text-sm text-center w-full transition-all duration-200"
+                    style={{
+                      background: "rgba(37,211,102,0.15)",
+                      border: "1px solid rgba(37,211,102,0.4)",
+                      color: "#25d366",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    💬 WhatsApp This
+                  </a>
+
+                  {/* Bottom-left: Strategy Call */}
+                  <button
+                    type="button"
+                    onClick={handleStrategyCall}
+                    data-ocid="service.modal.secondary_button"
+                    className="py-3.5 rounded-2xl font-bold text-sm text-center w-full transition-all duration-200"
+                    style={{
+                      background: "transparent",
+                      border: "1.5px solid rgba(0,255,198,0.35)",
+                      color: "#00ffc6",
+                      letterSpacing: "0.03em",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "rgba(0,255,198,0.07)";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(0,255,198,0.6)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "transparent";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(0,255,198,0.35)";
+                    }}
+                  >
+                    📞 Book Strategy Call
+                  </button>
+
+                  {/* Bottom-right: Custom Quote */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      window.location.hash = "apply";
+                    }}
+                    data-ocid="service.modal.quote_button"
+                    className="py-3.5 rounded-2xl font-bold text-sm text-center w-full transition-all duration-200"
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "rgba(255,255,255,0.6)",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "rgba(255,255,255,0.04)";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(255,255,255,0.25)";
+                      (e.currentTarget as HTMLButtonElement).style.color =
+                        "rgba(255,255,255,0.85)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLButtonElement).style.background =
+                        "transparent";
+                      (e.currentTarget as HTMLButtonElement).style.borderColor =
+                        "rgba(255,255,255,0.15)";
+                      (e.currentTarget as HTMLButtonElement).style.color =
+                        "rgba(255,255,255,0.6)";
+                    }}
+                  >
+                    📋 Get Custom Quote
+                  </button>
+                </div>
 
                 {/* Error message */}
                 {paymentState === "error" && (
                   <div
                     className="rounded-xl px-4 py-3 text-sm text-center"
+                    data-ocid="service.modal.error_state"
                     style={{
                       background: "rgba(255,50,50,0.08)",
                       border: "1px solid rgba(255,50,50,0.25)",
@@ -397,38 +535,22 @@ export default function ServiceDetailModal({
                   </div>
                 )}
 
-                {/* Strategy Call button */}
-                <button
-                  type="button"
-                  onClick={handleStrategyCall}
-                  className="w-full py-3.5 rounded-2xl font-bold text-sm text-center block transition-all duration-200"
-                  style={{
-                    background: "transparent",
-                    border: "1.5px solid rgba(0,255,198,0.35)",
-                    color: "#00ffc6",
-                    letterSpacing: "0.04em",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      "rgba(0,255,198,0.07)";
-                    (e.currentTarget as HTMLButtonElement).style.borderColor =
-                      "rgba(0,255,198,0.6)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.background =
-                      "transparent";
-                    (e.currentTarget as HTMLButtonElement).style.borderColor =
-                      "rgba(0,255,198,0.35)";
-                  }}
-                >
-                  📞 BOOK A STRATEGY CALL FIRST
-                </button>
-
-                {/* Trust note */}
-                <p className="text-center text-xs text-gray-600 pt-1">
-                  🔒 Secured by Razorpay · 256-bit SSL encryption
-                </p>
+                {/* Trust badges */}
+                <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                  <span
+                    className="text-[11px] font-bold px-3 py-1.5 rounded-full"
+                    style={{
+                      background: "rgba(0,255,198,0.08)",
+                      border: "1px solid rgba(0,255,198,0.3)",
+                      color: "#00ffc6",
+                    }}
+                  >
+                    🛡 100% Money Back Guarantee
+                  </span>
+                  <span className="text-[11px] text-gray-600 font-medium">
+                    🔒 Secured by Razorpay · 256-bit SSL
+                  </span>
+                </div>
               </div>
             )}
           </div>

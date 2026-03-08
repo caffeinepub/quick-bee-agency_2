@@ -54,7 +54,7 @@ export const SERVICES_DATA: Service[] = [
       "Revenue attribution modeling with multi-touch analysis",
       "Drill-down filters by channel, date range, and segment",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📈",
   },
   {
@@ -107,7 +107,7 @@ export const SERVICES_DATA: Service[] = [
       "Monthly attribution audit and budget reallocation recommendations",
       "Executive-level attribution summary deck each quarter",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "6–7 days",
     icon: "🔗",
   },
 
@@ -126,7 +126,7 @@ export const SERVICES_DATA: Service[] = [
       "Sales rep notification system via email, SMS & WhatsApp",
       "Lost deal re-engagement sequence with 7-touch automation",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "⚙️",
   },
   {
@@ -144,7 +144,7 @@ export const SERVICES_DATA: Service[] = [
       "WhatsApp, website widget & Instagram DM deployment",
       "Monthly conversation analytics and bot performance report",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "6–7 days",
     icon: "🤖",
   },
   {
@@ -161,7 +161,7 @@ export const SERVICES_DATA: Service[] = [
       "CRM integration to pause sequences when deals move stages",
       "Monthly deliverability audit and list hygiene cleaning",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📧",
   },
   {
@@ -179,7 +179,7 @@ export const SERVICES_DATA: Service[] = [
       "Payment gateway integration for frictionless checkout",
       "Real-time funnel performance dashboard with conversion rates",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "6–7 days",
     icon: "🚀",
   },
 
@@ -199,7 +199,7 @@ export const SERVICES_DATA: Service[] = [
       "White-label proposal templates and contract agreements",
       "30-day launch support and staff training included",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🏢",
   },
   {
@@ -216,7 +216,7 @@ export const SERVICES_DATA: Service[] = [
       "Go-to-market strategy for new products or services",
       "Written strategy report (30+ pages) with priority action plan",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🗺️",
   },
   {
@@ -234,7 +234,7 @@ export const SERVICES_DATA: Service[] = [
       "Social media profile image and cover templates",
       "Brand guidelines PDF (25+ pages) for consistent usage",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "6–7 days",
     icon: "🎨",
   },
   {
@@ -251,7 +251,7 @@ export const SERVICES_DATA: Service[] = [
       "Automated client health-score alerts and churn prevention triggers",
       "Team permission setup and role-based access control",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📋",
   },
   {
@@ -269,7 +269,7 @@ export const SERVICES_DATA: Service[] = [
       "Sales KPI dashboard setup and weekly review framework",
       "1-month post-training coaching support via WhatsApp group",
     ],
-    deliveryTime: "28 days",
+    deliveryTime: "6–7 days",
     icon: "🏆",
   },
   {
@@ -286,7 +286,7 @@ export const SERVICES_DATA: Service[] = [
       "Checklists and templates for each SOP",
       "SOP management system setup (Notion, Trainual, or similar)",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "6–7 days",
     icon: "📝",
   },
   {
@@ -303,7 +303,7 @@ export const SERVICES_DATA: Service[] = [
       "Process map documentation in Lucidchart/Miro format",
       "Priority action list for immediate process improvement",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🔄",
   },
   {
@@ -320,7 +320,7 @@ export const SERVICES_DATA: Service[] = [
       "Project kickoff call scheduling automation",
       "Client access setup for project management and reporting tools",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🤝",
   },
   {
@@ -337,7 +337,7 @@ export const SERVICES_DATA: Service[] = [
       "Sales pipeline value and velocity tracking",
       "Weekly automated revenue reports emailed to leadership",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "💰",
   },
   {
@@ -354,7 +354,7 @@ export const SERVICES_DATA: Service[] = [
       "Red/amber/green performance alerts via Slack or email",
       "Quarterly KPI review template and facilitation guide",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📊",
   },
   {
@@ -371,7 +371,7 @@ export const SERVICES_DATA: Service[] = [
       "Cross-team collaboration workflows and approval processes",
       "Staff training and onboarding guide for the new system",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "⚡",
   },
   {
@@ -389,7 +389,7 @@ export const SERVICES_DATA: Service[] = [
       "SEO foundation: meta tags, schema markup, site speed optimization",
       "3 rounds of revisions and 30-day post-launch support",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🌐",
   },
   {
@@ -440,7 +440,7 @@ export const SERVICES_DATA: Service[] = [
       "Partner onboarding email sequence and training program",
       "Affiliate tracking software setup and integration",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "6–7 days",
     icon: "🤲",
   },
   {
@@ -458,7 +458,7 @@ export const SERVICES_DATA: Service[] = [
       "90-day implementation calendar with weekly action items",
       "Bi-weekly strategy calls for 3 months with founder team",
     ],
-    deliveryTime: "28–35 days",
+    deliveryTime: "7 days",
     icon: "🦁",
   },
 
@@ -494,7 +494,7 @@ export const SERVICES_DATA: Service[] = [
       "Internal linking strategy to boost site authority",
       "CTA placement within each article to drive conversions",
     ],
-    deliveryTime: "14 days",
+    deliveryTime: "6–7 days",
     icon: "✍️",
   },
   {
@@ -511,7 +511,7 @@ export const SERVICES_DATA: Service[] = [
       "Landing page copy for the lead magnet opt-in page",
       "Thank-you page and delivery email sequence",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🎁",
   },
   {
@@ -545,7 +545,7 @@ export const SERVICES_DATA: Service[] = [
       "Designed PDF version for use in proposals and pitches",
       "Short-form social media summary version for each case study",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🏅",
   },
   {
@@ -562,7 +562,7 @@ export const SERVICES_DATA: Service[] = [
       "Subscriber list segmentation and targeting setup",
       "Open rate and click rate benchmarking with optimisation advice",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "💌",
   },
   {
@@ -579,7 +579,7 @@ export const SERVICES_DATA: Service[] = [
       "Featured snippet optimization for top 10 questions",
       "Structured data (FAQ schema) added to every page",
     ],
-    deliveryTime: "21 days",
+    deliveryTime: "6–7 days",
     icon: "🏛️",
   },
 
@@ -616,7 +616,7 @@ export const SERVICES_DATA: Service[] = [
       "Quarterly campaign calendar with campaign themes and offers",
       "Measurement framework: KPIs, tools, and reporting cadence",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🌐",
   },
   {
@@ -634,7 +634,7 @@ export const SERVICES_DATA: Service[] = [
       "Split testing setup for headline, CTA, and offer variants",
       "Funnel analytics dashboard with real-time conversion data",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "6–7 days",
     icon: "📐",
   },
 
@@ -670,7 +670,7 @@ export const SERVICES_DATA: Service[] = [
       "A/B testing of subject lines and opening hooks",
       "Campaign performance report with reply analysis",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📤",
   },
   {
@@ -704,7 +704,7 @@ export const SERVICES_DATA: Service[] = [
       "VIP customer and repeat buyer reward flow",
       "Revenue attribution for each flow with weekly performance alerts",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🛒",
   },
 
@@ -724,7 +724,7 @@ export const SERVICES_DATA: Service[] = [
       "API integration with ERP, billing, and marketing platforms",
       "Team training programme for sales, marketing, and ops teams",
     ],
-    deliveryTime: "45–60 days",
+    deliveryTime: "7 days",
     icon: "🏛️",
   },
   {
@@ -742,7 +742,7 @@ export const SERVICES_DATA: Service[] = [
       "Dedicated marketing operations manager for 90 days post-launch",
       "Quarterly strategy reviews with C-level stakeholders",
     ],
-    deliveryTime: "60–90 days",
+    deliveryTime: "7 days",
     icon: "🏗️",
   },
   {
@@ -759,7 +759,7 @@ export const SERVICES_DATA: Service[] = [
       "SLA agreements between marketing, sales, and CS defined and automated",
       "Revenue operations playbook (50+ pages) for ongoing management",
     ],
-    deliveryTime: "30–45 days",
+    deliveryTime: "7 days",
     icon: "⚡",
   },
 
@@ -795,7 +795,7 @@ export const SERVICES_DATA: Service[] = [
       "Canva or Figma file delivered with team sharing access",
       "5 ready-to-post designs created using the templates",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🖼️",
   },
   {
@@ -812,7 +812,7 @@ export const SERVICES_DATA: Service[] = [
       "PowerPoint, Google Slides, and PDF formats delivered",
       "Speaker notes and delivery coaching tips included",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "💼",
   },
   {
@@ -846,7 +846,7 @@ export const SERVICES_DATA: Service[] = [
       "Email signature design for all team members",
       "Editable master files in Canva or Illustrator",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "📦",
   },
   {
@@ -864,7 +864,7 @@ export const SERVICES_DATA: Service[] = [
       "Design system: components, tokens, and style guide documentation",
       "Developer handoff file with annotations and asset exports",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "📱",
   },
 
@@ -883,7 +883,7 @@ export const SERVICES_DATA: Service[] = [
       "Sales Navigator prospecting and list segmentation",
       "Monthly lead pipeline report with contact database delivery",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "💼",
   },
   {
@@ -901,7 +901,7 @@ export const SERVICES_DATA: Service[] = [
       "Facebook/Google ad creative to drive traffic to the funnel",
       "Weekly lead count and funnel conversion report",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "5–7 days",
     icon: "🎯",
   },
   {
@@ -918,7 +918,7 @@ export const SERVICES_DATA: Service[] = [
       "CRM pipeline updates with detailed prospect notes",
       "Weekly performance report and strategy iteration",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "📅",
   },
 
@@ -938,7 +938,7 @@ export const SERVICES_DATA: Service[] = [
       "A/B testing framework for creatives, copy, and audiences",
       "Bi-weekly performance report with optimisation recommendations",
     ],
-    deliveryTime: "7–10 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "📘",
   },
   {
@@ -955,7 +955,7 @@ export const SERVICES_DATA: Service[] = [
       "Bidding strategy optimisation: manual CPC, tROAS, tCPA",
       "Monthly search term analysis and bid adjustment report",
     ],
-    deliveryTime: "5–7 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "🔍",
   },
   {
@@ -972,7 +972,7 @@ export const SERVICES_DATA: Service[] = [
       "Smart bidding with target ROAS configuration",
       "Weekly ROAS and product-level performance report",
     ],
-    deliveryTime: "7–10 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "🛍️",
   },
   {
@@ -989,7 +989,7 @@ export const SERVICES_DATA: Service[] = [
       "YouTube remarketing pixel and custom audience list setup",
       "View rate, CTR, and conversion analysis with weekly optimisation",
     ],
-    deliveryTime: "7–10 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "▶️",
   },
   {
@@ -1023,7 +1023,7 @@ export const SERVICES_DATA: Service[] = [
       "Lead Gen Form setup with CRM integration",
       "Monthly LinkedIn Ads performance audit with budget reallocation",
     ],
-    deliveryTime: "5–7 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "💼",
   },
   {
@@ -1040,7 +1040,7 @@ export const SERVICES_DATA: Service[] = [
       "Programmatic DSP campaign setup (DV360 or The Trade Desk)",
       "Viewability and brand lift measurement reporting",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📺",
   },
   {
@@ -1057,7 +1057,7 @@ export const SERVICES_DATA: Service[] = [
       "Platform-specific size formatting: square, story, banner",
       "Creative performance brief with hypothesis for testing",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🎨",
   },
   {
@@ -1075,7 +1075,7 @@ export const SERVICES_DATA: Service[] = [
       "Landing page CRO recommendations per campaign",
       "90-day paid media scaling roadmap with projected ROAS targets",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🔬",
   },
 
@@ -1095,7 +1095,7 @@ export const SERVICES_DATA: Service[] = [
       "Weekly growth board presentation to leadership team",
       "Post-sprint scale plan with resource and budget recommendations",
     ],
-    deliveryTime: "30 days",
+    deliveryTime: "7 days",
     icon: "🚀",
   },
   {
@@ -1112,7 +1112,7 @@ export const SERVICES_DATA: Service[] = [
       "Agency and vendor management on your behalf",
       "Hiring and team structure recommendations",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "👑",
   },
   {
@@ -1130,7 +1130,7 @@ export const SERVICES_DATA: Service[] = [
       "Weekly accountability calls and daily Slack access",
       "Performance guarantee: 2x ROI or money-back",
     ],
-    deliveryTime: "90 days",
+    deliveryTime: "7 days",
     icon: "💎",
   },
   {
@@ -1148,7 +1148,7 @@ export const SERVICES_DATA: Service[] = [
       "Quarterly strategy pivots based on performance data",
       "Monthly executive revenue report with YoY comparison",
     ],
-    deliveryTime: "6 months",
+    deliveryTime: "7 days",
     icon: "🌟",
   },
 
@@ -1167,7 +1167,7 @@ export const SERVICES_DATA: Service[] = [
       "Review generation campaign to increase star ratings on key platforms",
       "Google Business Profile optimisation and management",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "5–7 days",
     icon: "🛡️",
   },
   {
@@ -1184,7 +1184,7 @@ export const SERVICES_DATA: Service[] = [
       "Crisis communication plan and real-time response protocol",
       "Monthly reputation health score report with trend analysis",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "👁️",
   },
 
@@ -1237,7 +1237,7 @@ export const SERVICES_DATA: Service[] = [
       "Internal linking audit and strategic link addition",
       "Image ALT text, file name, and compression optimisation",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "📝",
   },
   {
@@ -1254,7 +1254,7 @@ export const SERVICES_DATA: Service[] = [
       "Review generation strategy and response templates",
       "Local schema markup implementation for rich results",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📍",
   },
   {
@@ -1271,7 +1271,7 @@ export const SERVICES_DATA: Service[] = [
       "Anchor text strategy aligned to target keyword rankings",
       "Monthly backlink acquisition report with DA metrics",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "🔗",
   },
   {
@@ -1288,7 +1288,7 @@ export const SERVICES_DATA: Service[] = [
       "Faceted navigation and pagination SEO configuration",
       "Organic revenue tracking and eCommerce-specific KPI dashboard",
     ],
-    deliveryTime: "21 days",
+    deliveryTime: "6–7 days",
     icon: "🛒",
   },
   {
@@ -1305,7 +1305,7 @@ export const SERVICES_DATA: Service[] = [
       "Custom featured image and SEO-optimised image ALT text",
       "Internal links to 3+ existing pages per article",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "✍️",
   },
   {
@@ -1323,7 +1323,7 @@ export const SERVICES_DATA: Service[] = [
       "Monthly enterprise SEO performance report with executive summary",
       "Dedicated senior SEO strategist as your point of contact",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "6–7 days",
     icon: "🏢",
   },
 
@@ -1376,7 +1376,7 @@ export const SERVICES_DATA: Service[] = [
       "Community management: replies to all comments and DMs within 2 hours",
       "Monthly growth report with follower, reach, and engagement metrics",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "📸",
   },
   {
@@ -1393,7 +1393,7 @@ export const SERVICES_DATA: Service[] = [
       "Employee advocacy programme to amplify reach organically",
       "Monthly LinkedIn analytics report: impressions, clicks, and follower growth",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "💼",
   },
   {
@@ -1410,7 +1410,7 @@ export const SERVICES_DATA: Service[] = [
       "Comment moderation and community tab posts",
       "Monthly channel analytics report with watch time and subscriber metrics",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "▶️",
   },
   {
@@ -1427,7 +1427,7 @@ export const SERVICES_DATA: Service[] = [
       "Daily budget monitoring and bid optimisation",
       "Bi-weekly performance report with ROAS and CPL analysis",
     ],
-    deliveryTime: "5–7 days setup + ongoing",
+    deliveryTime: "5–7 days",
     icon: "📢",
   },
   {
@@ -1444,7 +1444,7 @@ export const SERVICES_DATA: Service[] = [
       "Content review and approval workflow",
       "Post-campaign performance report: reach, impressions, and conversions",
     ],
-    deliveryTime: "21–28 days per campaign",
+    deliveryTime: "6–7 days",
     icon: "⭐",
   },
   {
@@ -1461,7 +1461,7 @@ export const SERVICES_DATA: Service[] = [
       "Caption and hashtag package for each post",
       "Monthly performance analysis and trend integration",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "🎥",
   },
   {
@@ -1479,7 +1479,7 @@ export const SERVICES_DATA: Service[] = [
       "Monthly social media performance report and strategy review",
       "Quarterly brand audit and content strategy refresh",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "5–7 days",
     icon: "🌐",
   },
 
@@ -1515,7 +1515,7 @@ export const SERVICES_DATA: Service[] = [
       "Contact form with email notification",
       "1-month free hosting setup guidance and domain recommendation",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🌐",
   },
   {
@@ -1549,7 +1549,7 @@ export const SERVICES_DATA: Service[] = [
       "Freelance pricing guide and proposal template library",
       "Lifetime community access for peer support and referrals",
     ],
-    deliveryTime: "3 weeks",
+    deliveryTime: "5–7 days",
     icon: "💡",
   },
   {
@@ -1585,7 +1585,7 @@ export const SERVICES_DATA: Service[] = [
       "3 cut lengths: 2-min full version, 60-sec and 30-sec social cuts",
       "3 rounds of revision included",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🎬",
   },
   {
@@ -1602,7 +1602,7 @@ export const SERVICES_DATA: Service[] = [
       "Licensed background music and sound effects",
       "MP4 and WebM delivery formats for all platforms",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🎥",
   },
   {
@@ -1620,7 +1620,7 @@ export const SERVICES_DATA: Service[] = [
       "Platform-specific aspect ratio export: 1:1, 4:5, 9:16, 16:9",
       "Post-launch performance brief for creative iteration",
     ],
-    deliveryTime: "28–35 days",
+    deliveryTime: "7 days",
     icon: "📹",
   },
 
@@ -1639,7 +1639,7 @@ export const SERVICES_DATA: Service[] = [
       "Page speed optimisation: 90+ Google PageSpeed score",
       "A/B testing setup for headline and CTA variants",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🎯",
   },
   {
@@ -1657,7 +1657,7 @@ export const SERVICES_DATA: Service[] = [
       "Contact and inquiry forms with CRM integration",
       "30-day post-launch support and bug fixes",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🌐",
   },
   {
@@ -1675,7 +1675,7 @@ export const SERVICES_DATA: Service[] = [
       "Speed optimisation and mobile UX refinement",
       "3-month post-launch growth consultation included",
     ],
-    deliveryTime: "28–35 days",
+    deliveryTime: "7 days",
     icon: "🛒",
   },
   {
@@ -1693,7 +1693,7 @@ export const SERVICES_DATA: Service[] = [
       "Payment subscription integration (Stripe / Razorpay)",
       "Cloud deployment (AWS / GCP) with CI/CD pipeline setup",
     ],
-    deliveryTime: "60–90 days",
+    deliveryTime: "7 days",
     icon: "💻",
   },
   {
@@ -1727,7 +1727,7 @@ export const SERVICES_DATA: Service[] = [
       "Up to 3 hours of content edits or small feature additions per month",
       "Monthly website health report with uptime statistics",
     ],
-    deliveryTime: "Ongoing monthly",
+    deliveryTime: "3–5 days",
     icon: "🔒",
   },
 
@@ -1748,7 +1748,7 @@ export const SERVICES_DATA: Service[] = [
       "Google Analytics integration for visitor tracking",
       "30-day post-launch support and minor content tweaks included",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🚀",
   },
   {
@@ -1767,7 +1767,7 @@ export const SERVICES_DATA: Service[] = [
       "Lead inquiry form with CRM-ready webhook integration",
       "Core Web Vitals optimised — 85+ PageSpeed score guaranteed",
     ],
-    deliveryTime: "14–18 days",
+    deliveryTime: "5–7 days",
     icon: "🏢",
   },
   {
@@ -1804,7 +1804,7 @@ export const SERVICES_DATA: Service[] = [
       "Social media feeds integration (Instagram food posts)",
       "Zomato / Swiggy / Magicpin quick-link buttons",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🍽️",
   },
   {
@@ -1823,7 +1823,7 @@ export const SERVICES_DATA: Service[] = [
       "HIPAA-friendly contact forms with secure data handling",
       "Emergency contact and ambulance hotline button",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🏥",
   },
   {
@@ -1842,7 +1842,7 @@ export const SERVICES_DATA: Service[] = [
       "Testimonials and past sales success stories section",
       "Map integration showing nearby schools, hospitals, and transport",
     ],
-    deliveryTime: "14–21 days",
+    deliveryTime: "5–7 days",
     icon: "🏠",
   },
   {
@@ -1861,7 +1861,7 @@ export const SERVICES_DATA: Service[] = [
       "Special offers and seasonal packages highlighted section",
       "Multi-language support (English + regional language option)",
     ],
-    deliveryTime: "14–18 days",
+    deliveryTime: "5–7 days",
     icon: "🏨",
   },
   {
@@ -1880,7 +1880,7 @@ export const SERVICES_DATA: Service[] = [
       "Donor wall / recognition section for major contributors",
       "SSL-secured and GDPR-compliant data handling",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "🌱",
   },
   {
@@ -1899,7 +1899,7 @@ export const SERVICES_DATA: Service[] = [
       "Upcoming batches and events notice board",
       "Live chat / WhatsApp widget for instant admission queries",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "🎓",
   },
   {
@@ -1918,7 +1918,7 @@ export const SERVICES_DATA: Service[] = [
       "News section for industry updates and company milestones",
       "Multi-currency price display for international buyers",
     ],
-    deliveryTime: "14–18 days",
+    deliveryTime: "5–7 days",
     icon: "⚙️",
   },
   {
@@ -1937,7 +1937,7 @@ export const SERVICES_DATA: Service[] = [
       "Confidentiality assurance and privacy policy page",
       "Click-to-call button and emergency legal helpline integration",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "⚖️",
   },
   {
@@ -1956,7 +1956,7 @@ export const SERVICES_DATA: Service[] = [
       "Secure document inquiry portal link integration",
       "WhatsApp quick-connect for urgent financial queries",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "💼",
   },
   {
@@ -1975,7 +1975,7 @@ export const SERVICES_DATA: Service[] = [
       "Coupon / discount code management system",
       "Mobile-first design with 95+ PageSpeed score",
     ],
-    deliveryTime: "21–28 days",
+    deliveryTime: "6–7 days",
     icon: "🛍️",
   },
   {
@@ -1994,7 +1994,7 @@ export const SERVICES_DATA: Service[] = [
       "Instagram feed integration for real-time portfolio updates",
       "WhatsApp booking button for instant appointment confirmations",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "💇",
   },
 
@@ -2053,7 +2053,7 @@ export const SERVICES_DATA: Service[] = [
       "Automated confirmation email on booking",
       "Mobile-optimised with click-to-call and WhatsApp floating button",
     ],
-    deliveryTime: "7–10 days",
+    deliveryTime: "5–7 days",
     icon: "📅",
   },
   {
@@ -2072,7 +2072,7 @@ export const SERVICES_DATA: Service[] = [
       "Press kit / media page with bio, headshots, and talking points",
       "Email list opt-in with lead magnet PDF delivery automation",
     ],
-    deliveryTime: "10–14 days",
+    deliveryTime: "5–7 days",
     icon: "⭐",
   },
 
@@ -2131,7 +2131,7 @@ export const SERVICES_DATA: Service[] = [
       "Projects or portfolio mini-gallery with GitHub / live links",
       "Contact form and LinkedIn profile link for recruiter outreach",
     ],
-    deliveryTime: "2–4 days",
+    deliveryTime: "2–3 days",
     icon: "📄",
   },
   {
@@ -2189,7 +2189,7 @@ export const SERVICES_DATA: Service[] = [
       "Whitelist and presale phase management system",
       "Launch strategy consultation and Discord community setup guidance",
     ],
-    deliveryTime: "35–45 days",
+    deliveryTime: "6–7 days",
     icon: "⛓️",
   },
 ];
@@ -2202,7 +2202,7 @@ export const ENTERPRISE_PLANS: EnterprisePlan[] = [
     id: 1,
     name: "Titan",
     price: "₹74,999",
-    period: "/month",
+    period: "one-time",
     tagline: "Scale with AI-Powered Systems",
     highlighted: false,
     color: "#00ffc6",
@@ -2229,7 +2229,7 @@ export const ENTERPRISE_PLANS: EnterprisePlan[] = [
     id: 2,
     name: "Apex",
     price: "₹1,49,999",
-    period: "/month",
+    period: "one-time",
     tagline: "Dominate Your Market",
     highlighted: true,
     color: "#ff6a00",
@@ -2256,7 +2256,7 @@ export const ENTERPRISE_PLANS: EnterprisePlan[] = [
     id: 3,
     name: "Sovereign",
     price: "₹2,99,999",
-    period: "/month",
+    period: "one-time",
     tagline: "Total Revenue Supremacy",
     highlighted: false,
     color: "#00ffc6",
