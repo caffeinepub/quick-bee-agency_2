@@ -613,7 +613,9 @@ function EnterprisePlanCard({
 }
 
 // ── Main Services Section ────────────────────────────────────
-export default function ServicesSection() {
+export default function ServicesSection({
+  onOpenCheckout,
+}: { onOpenCheckout?: (service: import("./ServicesData").Service) => void }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const tabsRef = useRef<HTMLDivElement>(null);
   const [showSlideHint, setShowSlideHint] = useState(true);
@@ -877,6 +879,7 @@ export default function ServicesSection() {
       <ServiceDetailModal
         service={selectedService}
         onClose={() => setSelectedService(null)}
+        onOpenCheckout={onOpenCheckout}
       />
     </>
   );

@@ -12,9 +12,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import Background3D from "./components/Background3D";
+import CheckoutPage from "./components/CheckoutPage";
 import CustomCursor from "./components/CustomCursor";
 import HeroCanvas3D from "./components/HeroCanvas3D";
+import type { Service } from "./components/ServicesData";
 import ServicesSection from "./components/ServicesSection";
+import ThankYouPage from "./components/ThankYouPage";
 import {
   useCounter,
   useIntersectionObserver,
@@ -3151,10 +3154,50 @@ function PageViewTracker() {
 // ============================================================
 export default function App() {
   const [bannerVisible, setBannerVisible] = useState(true);
+  const [page, setPage] = useState<"home" | "checkout" | "thankyou">("home");
+  const [checkoutService, setCheckoutService] = useState<Service | undefined>(
+    undefined,
+  );
+  const [thankYouData, setThankYouData] = useState({
+    paymentId: "",
+    itemName: "",
+  });
+
+  const handleOpenCheckout = (svc: Service) => {
+    setCheckoutService(svc);
+    setPage("checkout");
+  };
+  const handlePaymentSuccess = (pid: string, name: string) => {
+    setThankYouData({ paymentId: pid, itemName: name });
+    setPage("thankyou");
+  };
+  const handleBackHome = () => {
+    setPage("home");
+    setCheckoutService(undefined);
+  };
   // 47 hours 59 minutes 59 seconds
   const { formatted: countdownFormatted } = useCountdown(
     47 * 3600 + 59 * 60 + 59,
   );
+
+  if (page === "checkout") {
+    return (
+      <CheckoutPage
+        service={checkoutService}
+        onBack={handleBackHome}
+        onPaymentSuccess={handlePaymentSuccess}
+      />
+    );
+  }
+  if (page === "thankyou") {
+    return (
+      <ThankYouPage
+        paymentId={thankYouData.paymentId}
+        itemName={thankYouData.itemName}
+        onBack={handleBackHome}
+      />
+    );
+  }
 
   return (
     <div
@@ -3194,7 +3237,7 @@ export default function App() {
         <HeroSection />
         <SpecialOffersSection countdown={countdownFormatted} />
         <EnterpriseSystemsSection />
-        <ServicesSection />
+        <ServicesSection onOpenCheckout={handleOpenCheckout} />
         <IntegrationSection />
         <PerformanceSection />
         <MidPageCTAStrip />

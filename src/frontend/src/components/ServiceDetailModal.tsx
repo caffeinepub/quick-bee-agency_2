@@ -6,6 +6,7 @@ import { getServiceOffer } from "./ServicesSection";
 interface ServiceDetailModalProps {
   service: Service | null;
   onClose: () => void;
+  onOpenCheckout?: (service: Service) => void;
 }
 
 function formatPrice(price: number): string {
@@ -17,6 +18,7 @@ type PaymentState = "idle" | "loading" | "success" | "error";
 export default function ServiceDetailModal({
   service,
   onClose,
+  onOpenCheckout,
 }: ServiceDetailModalProps) {
   const { openPayment } = useRazorpay();
   const [paymentState, setPaymentState] = useState<PaymentState>("idle");
@@ -392,7 +394,14 @@ export default function ServiceDetailModal({
                   {/* Top-left: Pay Now */}
                   <button
                     type="button"
-                    onClick={handlePay}
+                    onClick={() => {
+                      if (onOpenCheckout && service) {
+                        onClose();
+                        onOpenCheckout(service);
+                      } else {
+                        handlePay();
+                      }
+                    }}
                     disabled={paymentState === "loading"}
                     data-ocid="service.modal.primary_button"
                     className="py-3.5 rounded-2xl font-bold text-sm text-center w-full transition-all duration-200 relative overflow-hidden"
