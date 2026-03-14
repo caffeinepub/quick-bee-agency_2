@@ -3158,6 +3158,7 @@ export default function App() {
   const [checkoutService, setCheckoutService] = useState<Service | undefined>(
     undefined,
   );
+  const [cartServices, setCartServices] = useState<Service[]>([]);
   const [thankYouData, setThankYouData] = useState({
     paymentId: "",
     itemName: "",
@@ -3166,6 +3167,17 @@ export default function App() {
   const handleOpenCheckout = (svc: Service) => {
     setCheckoutService(svc);
     setPage("checkout");
+  };
+  const handleOpenCartCheckout = () => {
+    setCheckoutService(undefined);
+    setPage("checkout");
+  };
+  const handleToggleCartService = (svc: Service) => {
+    setCartServices((prev) => {
+      const exists = prev.find((s) => s.id === svc.id);
+      if (exists) return prev.filter((s) => s.id !== svc.id);
+      return [...prev, svc];
+    });
   };
   const handlePaymentSuccess = (pid: string, name: string) => {
     setThankYouData({ paymentId: pid, itemName: name });
@@ -3184,6 +3196,7 @@ export default function App() {
     return (
       <CheckoutPage
         service={checkoutService}
+        services={checkoutService ? undefined : cartServices}
         onBack={handleBackHome}
         onPaymentSuccess={handlePaymentSuccess}
       />
@@ -3237,7 +3250,13 @@ export default function App() {
         <HeroSection />
         <SpecialOffersSection countdown={countdownFormatted} />
         <EnterpriseSystemsSection />
-        <ServicesSection onOpenCheckout={handleOpenCheckout} />
+        <ServicesSection
+          onOpenCheckout={handleOpenCheckout}
+          cartServices={cartServices}
+          onToggleCart={handleToggleCartService}
+          onOpenCartCheckout={handleOpenCartCheckout}
+          onClearCart={() => setCartServices([])}
+        />
         <IntegrationSection />
         <PerformanceSection />
         <MidPageCTAStrip />

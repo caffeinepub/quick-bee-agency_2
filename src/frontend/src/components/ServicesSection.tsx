@@ -203,10 +203,14 @@ function ServiceCard({
   service,
   index,
   onSelect,
+  isInCart,
+  onToggleCart,
 }: {
   service: Service;
   index: number;
   onSelect: (service: Service) => void;
+  isInCart: boolean;
+  onToggleCart: (service: Service) => void;
 }) {
   const offer = getServiceOffer(service);
   const waText = encodeURIComponent(`Hi, I'm interested in ${service.name}`);
@@ -215,11 +219,51 @@ function ServiceCard({
     <RevealSection delay={Math.min(index * 40, 400)}>
       <div
         className="glow-card card-neon-hover cursor-hover glass-panel rounded-2xl p-5 h-full flex flex-col"
-        style={{ boxShadow: "0 4px 30px rgba(0,0,0,0.35)" }}
+        style={{
+          boxShadow: isInCart
+            ? "0 0 0 2px #00ffc6, 0 4px 30px rgba(0,255,198,0.25)"
+            : "0 4px 30px rgba(0,0,0,0.35)",
+          transition: "box-shadow 0.2s",
+        }}
       >
         {/* Header row */}
         <div className="flex items-start justify-between mb-2">
-          <span className="text-2xl">{service.icon}</span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onToggleCart(service)}
+              data-ocid="service.card.checkbox"
+              title={isInCart ? "Remove from selection" : "Add to selection"}
+              className="flex items-center justify-center w-5 h-5 rounded flex-shrink-0 transition-all duration-200"
+              style={{
+                background: isInCart ? "#00ffc6" : "rgba(255,255,255,0.05)",
+                border: isInCart
+                  ? "2px solid #00ffc6"
+                  : "2px solid rgba(255,255,255,0.25)",
+                cursor: "pointer",
+                boxShadow: isInCart ? "0 0 8px rgba(0,255,198,0.5)" : "none",
+              }}
+            >
+              {isInCart && (
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <polyline
+                    points="1.5 6 5 9.5 10.5 2.5"
+                    stroke="#0b0b0f"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+            </button>
+            <span className="text-2xl">{service.icon}</span>
+          </div>
           <span
             className="text-[10px] font-bold px-2 py-1 rounded-full whitespace-nowrap"
             style={{
@@ -615,11 +659,27 @@ function EnterprisePlanCard({
 // ── Main Services Section ────────────────────────────────────
 export default function ServicesSection({
   onOpenCheckout,
-}: { onOpenCheckout?: (service: import("./ServicesData").Service) => void }) {
+  cartServices = [],
+  onToggleCart,
+  onOpenCartCheckout,
+  onClearCart,
+}: {
+  onOpenCheckout?: (service: import("./ServicesData").Service) => void;
+  cartServices?: import("./ServicesData").Service[];
+  onToggleCart?: (service: import("./ServicesData").Service) => void;
+  onOpenCartCheckout?: () => void;
+  onClearCart?: () => void;
+}) {
   const [activeCategory, setActiveCategory] = useState("All");
   const tabsRef = useRef<HTMLDivElement>(null);
   const [showSlideHint, setShowSlideHint] = useState(true);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [confirmClear, setConfirmClear] = useState(false);
+
+  // Reset confirm state when cart empties
+  useEffect(() => {
+    if (cartServices.length === 0) setConfirmClear(false);
+  }, [cartServices.length]);
 
   // Hide slide hint once the user has scrolled the tabs at all
   const handleTabsScroll = () => {
@@ -807,6 +867,8 @@ export default function ServicesSection({
                 service={service}
                 index={i}
                 onSelect={setSelectedService}
+                isInCart={cartServices.some((s) => s.id === service.id)}
+                onToggleCart={onToggleCart ?? (() => {})}
               />
             ))}
           </div>
@@ -881,6 +943,154 @@ export default function ServicesSection({
         onClose={() => setSelectedService(null)}
         onOpenCheckout={onOpenCheckout}
       />
+
+      {/* ── FLOATING CART BAR ── */}
+      {cartServices.length > 0 && (
+        <div
+          className="fixed bottom-6 left-1/2 z-50 transition-all duration-500"
+          style={{
+            transform: "translateX(-50%)",
+            width: "min(90vw, 560px)",
+          }}
+        >
+          <div
+            className="rounded-2xl px-5 py-4 flex items-center justify-between gap-4"
+            style={{
+              background: "rgba(11,11,15,0.97)",
+              border: "1px solid rgba(0,255,198,0.45)",
+              boxShadow:
+                "0 0 40px rgba(0,255,198,0.25), 0 8px 30px rgba(0,0,0,0.6)",
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            {/* Left: count + total */}
+            <div className="flex flex-col min-w-0">
+              <span
+                className="text-xs font-bold"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                {cartServices.length} service
+                {cartServices.length > 1 ? "s" : ""} selected
+              </span>
+              <span className="text-xl font-black" style={{ color: "#00ffc6" }}>
+                ₹
+                {cartServices
+                  .reduce((t, s) => t + s.price, 0)
+                  .toLocaleString("en-IN")}
+                <span
+                  className="text-xs font-semibold ml-1"
+                  style={{ color: "rgba(255,255,255,0.45)" }}
+                >
+                  total
+                </span>
+              </span>
+            </div>
+
+            {/* Center: service names chips */}
+            <div className="flex-1 flex flex-wrap gap-1 overflow-hidden max-h-10">
+              {cartServices.slice(0, 3).map((s) => (
+                <span
+                  key={s.id}
+                  className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                  style={{
+                    background: "rgba(0,255,198,0.1)",
+                    border: "1px solid rgba(0,255,198,0.25)",
+                    color: "#00ffc6",
+                  }}
+                >
+                  {s.name.length > 18 ? `${s.name.slice(0, 16)}…` : s.name}
+                </span>
+              ))}
+              {cartServices.length > 3 && (
+                <span
+                  className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                  style={{
+                    background: "rgba(255,106,0,0.12)",
+                    border: "1px solid rgba(255,106,0,0.3)",
+                    color: "#ff6a00",
+                  }}
+                >
+                  +{cartServices.length - 3} more
+                </span>
+              )}
+            </div>
+
+            {/* Right: CTAs */}
+            <div className="flex-shrink-0 flex items-center gap-2">
+              {confirmClear ? (
+                <>
+                  <span
+                    className="text-xs font-semibold"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    Sure?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClearCart?.();
+                      setConfirmClear(false);
+                    }}
+                    data-ocid="cart.confirm_button"
+                    className="px-3 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-200"
+                    style={{
+                      background: "rgba(255,106,0,0.85)",
+                      color: "#fff",
+                      cursor: "pointer",
+                      border: "1px solid #ff6a00",
+                    }}
+                  >
+                    Yes, Clear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmClear(false)}
+                    data-ocid="cart.cancel_button"
+                    className="px-3 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-200"
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      color: "rgba(255,255,255,0.55)",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmClear(true)}
+                  data-ocid="cart.delete_button"
+                  className="px-3 py-2.5 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-200"
+                  style={{
+                    background: "rgba(255,106,0,0.12)",
+                    border: "1px solid rgba(255,106,0,0.35)",
+                    color: "#ff6a00",
+                    cursor: "pointer",
+                  }}
+                >
+                  Clear All
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={onOpenCartCheckout}
+                data-ocid="cart.open_modal_button"
+                className="px-4 py-2.5 rounded-xl font-black text-sm whitespace-nowrap transition-all duration-200"
+                style={{
+                  background: "#00ffc6",
+                  color: "#0b0b0f",
+                  boxShadow: "0 0 20px rgba(0,255,198,0.4)",
+                  cursor: "pointer",
+                }}
+              >
+                Checkout →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
