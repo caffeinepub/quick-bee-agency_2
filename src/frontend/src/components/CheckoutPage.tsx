@@ -395,6 +395,18 @@ export default function CheckoutPage({
         prefill: { name: form.name, email: form.email, contact: form.phone },
         onSuccess: (pid) => {
           setPaying(false);
+          // Send WhatsApp confirmation to owner
+          const addons = UPSELLS.filter((u) => selectedUpsells.has(u.name));
+          const addonText =
+            addons.length > 0
+              ? `\n📦 Add-ons: ${addons.map((a) => `${a.name} (₹${a.price.toLocaleString("en-IN")})`).join(", ")}`
+              : "";
+          const discountText = halfOff ? "\n🏷️ 50% Discount Applied" : "";
+          const msg = `🎉 NEW PAYMENT RECEIVED!\n\n👤 Client: ${form.name}\n📧 Email: ${form.email}\n📞 Phone: ${form.phone}\n🏢 Business: ${form.business || "N/A"}\n\n🛒 Service: ${itemName}\n💰 Amount Paid: ₹${grandTotal.toLocaleString("en-IN")}${addonText}${discountText}\n\n🆔 Razorpay Payment ID: ${pid}\n\n📝 Notes: ${form.notes || "None"}`;
+          window.open(
+            `https://wa.me/919182768591?text=${encodeURIComponent(msg)}`,
+            "_blank",
+          );
           onPaymentSuccess(pid, itemName);
         },
         onDismiss: () => setPaying(false),
