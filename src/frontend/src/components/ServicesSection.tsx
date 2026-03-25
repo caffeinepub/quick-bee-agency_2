@@ -198,6 +198,8 @@ function formatPrice(price: number): string {
   return `₹${price.toLocaleString("en-IN")}`;
 }
 
+import { MidnightCountdown } from "./ConversionFeatures";
+
 // ── Service Card ─────────────────────────────────────────────
 function ServiceCard({
   service,
@@ -299,10 +301,12 @@ function ServiceCard({
           {service.name}
         </h3>
 
-        {/* Price */}
-        <div className="text-xl font-black mb-2" style={{ color: "#00ffc6" }}>
+        {/* Price + Countdown */}
+        <div className="text-xl font-black mb-1" style={{ color: "#00ffc6" }}>
           {formatPrice(service.price)}
         </div>
+        <MidnightCountdown />
+        <div className="mb-2" />
 
         {/* Description */}
         <p

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useRazorpay } from "../hooks/useRazorpay";
+import { ExitIntentPopup, TrustTicker } from "./ConversionFeatures";
 import CustomCursor from "./CustomCursor";
 import type { EnterprisePlan, Service } from "./ServicesData";
 import { getServiceOffer } from "./ServicesSection";
@@ -323,6 +324,9 @@ export default function CheckoutPage({
   const [halfOff, setHalfOff] = useState(false);
 
   const topRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const [exitDiscount, setExitDiscount] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
 
   // Multi-service mode: when "services" array is passed (cart checkout)
   const isMulti = !service && !plan && services && services.length > 0;
@@ -359,7 +363,12 @@ export default function CheckoutPage({
     selectedUpsells.has(u.name),
   ).reduce((s, u) => s + u.price, 0);
   const subtotal = rawPrice + upsellsTotal;
-  const grandTotal = halfOff ? Math.round(subtotal * 0.5) : subtotal;
+  const baseDiscount = halfOff
+    ? 0.5
+    : exitDiscount > 0
+      ? 1 - exitDiscount / 100
+      : 1;
+  const grandTotal = Math.round(subtotal * baseDiscount);
 
   const toggleUpsell = (name: string) => {
     setSelectedUpsells((prev) => {
@@ -373,6 +382,16 @@ export default function CheckoutPage({
   useEffect(() => {
     topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const handleExpressPay = () => {
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const handlePay = async () => {
     if (!form.name || !form.email || !form.phone) {
@@ -426,6 +445,55 @@ export default function CheckoutPage({
       className="min-h-screen"
       style={{ background: "#0b0b0f", color: "#fff", fontFamily: "inherit" }}
     >
+      {/* Exit Intent Popup */}
+      <ExitIntentPopup
+        grandTotal={grandTotal}
+        onClaim={(pct) => {
+          setExitDiscount(pct);
+          formRef.current?.scrollIntoView({ behavior: "smooth" });
+        }}
+      />
+
+      {/* Sticky Bottom Pay Bar */}
+      {scrolled && (
+        <div
+          className="fixed bottom-0 left-0 right-0 z-[90] flex items-center justify-between gap-3 px-4 py-3"
+          style={{
+            background: "rgba(11,11,15,0.95)",
+            border: "1px solid rgba(0,255,198,0.25)",
+            boxShadow:
+              "0 -4px 30px rgba(0,0,0,0.5), 0 0 20px rgba(0,255,198,0.08)",
+            backdropFilter: "blur(16px)",
+          }}
+        >
+          <div className="hidden sm:block min-w-0">
+            <div
+              className="text-xs font-bold truncate"
+              style={{ color: "rgba(255,255,255,0.6)" }}
+            >
+              {itemName}
+            </div>
+          </div>
+          <div className="text-lg font-black" style={{ color: "#00ffc6" }}>
+            ₹{grandTotal.toLocaleString("en-IN")}
+          </div>
+          <button
+            type="button"
+            data-ocid="checkout.sticky_pay_button"
+            onClick={handlePay}
+            disabled={paying}
+            className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-black text-sm cursor-pointer disabled:opacity-60"
+            style={{
+              background: "linear-gradient(135deg,#ff6a00,#ff9500)",
+              color: "#fff",
+              boxShadow: "0 0 20px rgba(255,106,0,0.4)",
+            }}
+          >
+            🔒 PAY NOW — SECURE CHECKOUT
+          </button>
+        </div>
+      )}
+
       {/* Custom cursor on checkout page */}
       <CustomCursor />
 
@@ -459,6 +527,78 @@ export default function CheckoutPage({
         >
           <span>🔒</span>
           <span>SSL Secured</span>
+        </div>
+      </div>
+
+      {/* Trust Ticker */}
+      <TrustTicker />
+
+      {/* Progress Steps */}
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-2">
+        <div className="flex items-center justify-center gap-0">
+          {/* Step 1 */}
+          <div className="flex flex-col items-center">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm"
+              style={{ background: "#00ffc6", color: "#0b0b0f" }}
+            >
+              ✓
+            </div>
+            <div
+              className="text-[10px] font-bold mt-1"
+              style={{ color: "#00ffc6" }}
+            >
+              Select Service
+            </div>
+          </div>
+          {/* Line 1 */}
+          <div
+            className="h-0.5 w-16 sm:w-24 mx-1"
+            style={{ background: "linear-gradient(90deg,#00ffc6,#ff6a00)" }}
+          />
+          {/* Step 2 */}
+          <div className="flex flex-col items-center">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm"
+              style={{
+                background: "linear-gradient(135deg,#ff6a00,#ff9500)",
+                color: "#fff",
+                boxShadow: "0 0 16px rgba(255,106,0,0.5)",
+              }}
+            >
+              2
+            </div>
+            <div
+              className="text-[10px] font-bold mt-1"
+              style={{ color: "#ff6a00" }}
+            >
+              Fill Details
+            </div>
+          </div>
+          {/* Line 2 */}
+          <div
+            className="h-0.5 w-16 sm:w-24 mx-1"
+            style={{ background: "rgba(255,255,255,0.1)" }}
+          />
+          {/* Step 3 */}
+          <div className="flex flex-col items-center">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center font-black text-sm"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                border: "2px solid rgba(255,255,255,0.15)",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
+              3
+            </div>
+            <div
+              className="text-[10px] font-semibold mt-1"
+              style={{ color: "rgba(255,255,255,0.35)" }}
+            >
+              Pay &amp; Launch 🚀
+            </div>
+          </div>
         </div>
       </div>
 
@@ -518,6 +658,48 @@ export default function CheckoutPage({
           >
             One-Time Payment · No Subscription
           </div>
+          {/* Urgency Scarcity Banner */}
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
+            <div
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold"
+              style={{
+                background: "rgba(255,106,0,0.12)",
+                border: "1px solid rgba(255,106,0,0.35)",
+                color: "#ff6a00",
+              }}
+            >
+              ⚠️ Only 2 slots available this month
+            </div>
+            <div
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold"
+              style={{
+                background: "rgba(239,68,68,0.1)",
+                border: "1px solid rgba(239,68,68,0.3)",
+                color: "#ef4444",
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full red-live-dot inline-block"
+                style={{ background: "#ef4444" }}
+              />
+              3 people viewing this right now
+            </div>
+          </div>
+
+          {exitDiscount > 0 && (
+            <div
+              className="mb-4 px-5 py-3 rounded-2xl text-sm font-bold"
+              style={{
+                background: "rgba(0,255,198,0.1)",
+                border: "2px solid rgba(0,255,198,0.4)",
+                color: "#00ffc6",
+              }}
+            >
+              🎉 EXIT10 discount applied — You save {exitDiscount}%! New total:
+              ₹{grandTotal.toLocaleString("en-IN")}
+            </div>
+          )}
+
           <div className="flex flex-wrap justify-center gap-3">
             {[
               "✅ 7-Day Money Back",
@@ -899,8 +1081,48 @@ export default function CheckoutPage({
 
           {/* Right */}
           <div className="space-y-6">
+            {/* Express Pay Button */}
+            <div
+              className="rounded-2xl p-5 text-center"
+              style={{
+                background:
+                  "linear-gradient(135deg,rgba(0,255,198,0.07),rgba(255,106,0,0.05))",
+                border: "2px solid rgba(0,255,198,0.35)",
+                boxShadow: "0 0 40px rgba(0,255,198,0.08)",
+              }}
+            >
+              <div
+                className="text-xs font-black mb-2 tracking-widest"
+                style={{ color: "rgba(255,255,255,0.4)" }}
+              >
+                ⚡ EXPRESS CHECKOUT
+              </div>
+              <button
+                type="button"
+                data-ocid="checkout.express_pay_button"
+                onClick={handleExpressPay}
+                className="w-full py-4 rounded-2xl font-black text-lg cursor-pointer"
+                style={{
+                  background: "linear-gradient(135deg,#00ffc6,#00d4a8)",
+                  color: "#0b0b0f",
+                  boxShadow: "0 0 40px rgba(0,255,198,0.5)",
+                  animation: "pulse-btn 2s infinite",
+                }}
+              >
+                ⚡ PAY NOW — ₹{grandTotal.toLocaleString("en-IN")} — INSTANT
+                ACCESS
+              </button>
+              <div
+                className="text-xs mt-2"
+                style={{ color: "rgba(255,255,255,0.35)" }}
+              >
+                Skip the form, pay now · scroll down to fill details
+              </div>
+            </div>
+
             {/* Form */}
             <div
+              ref={formRef}
               className="rounded-2xl p-6"
               style={{
                 background: "rgba(255,255,255,0.03)",
@@ -1155,26 +1377,46 @@ export default function CheckoutPage({
               </div>
             </div>
 
-            {/* Guarantee */}
+            {/* Enhanced Guarantee */}
             <div
               className="rounded-2xl p-5 text-center"
               style={{
-                background: "rgba(0,255,198,0.05)",
-                border: "1px solid rgba(0,255,198,0.2)",
+                background:
+                  "linear-gradient(135deg,rgba(0,255,198,0.06),rgba(37,211,102,0.04))",
+                border: "2px solid rgba(0,255,198,0.3)",
+                boxShadow: "0 0 30px rgba(0,255,198,0.05)",
               }}
             >
-              <div className="text-2xl mb-1">🛡️</div>
+              <div className="text-4xl mb-2">🛡️</div>
               <div
-                className="font-bold text-sm mb-1"
-                style={{ color: "#00ffc6" }}
+                className="font-black text-base mb-1"
+                style={{ color: "#ff6a00" }}
               >
-                100% Satisfaction Guarantee
+                RISK-FREE GUARANTEE
               </div>
               <div
-                className="text-xs"
-                style={{ color: "rgba(255,255,255,0.5)" }}
+                className="text-sm font-semibold mb-3"
+                style={{ color: "#fff" }}
               >
-                7-day money-back · Free revisions · No questions asked
+                If you&apos;re not 100% satisfied within 7 days,
+                <br />
+                we&apos;ll refund every rupee — no questions asked
+              </div>
+              <div className="space-y-1 text-left">
+                {[
+                  "✅ 7-day full money-back guarantee",
+                  "✅ Free unlimited revisions",
+                  "✅ Dedicated support included",
+                  "✅ Results guaranteed or refund",
+                ].map((g) => (
+                  <div
+                    key={g}
+                    className="text-xs"
+                    style={{ color: "rgba(255,255,255,0.7)" }}
+                  >
+                    {g}
+                  </div>
+                ))}
               </div>
             </div>
 
